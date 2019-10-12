@@ -23,20 +23,22 @@
 
     <div class="row ml-3">
         <div class="col-md-7">
-            <h2 style="text-align: center;">Users</h2>
-            <div class="card border-secondary mb-3">
-                <div th:each="user : ${users}">
+            <h2 style="text-align: center;">Recent Posts</h2>
+            <div th:each="user : ${users}" class="card border-secondary mb-3">
+                <div th:each="post: ${user.posts}">
                     <div class="card-header" style="text-align: center;">
-                        <h4>User: <a th:href="'/blog/' + ${user.username}" th:text="${user.username}"></a> </h4>
+                        <h4><a th:href="'/blog/' + ${user.username}" th:text="${post.title}"></a> </h4>
                     </div>
                     <div class="card-body">
                         <div class="container my-3" style="align-items: center;">
-                            <script type="text/javascript"></script>
                             <img class="border border-info" id="myImage" style="border-width: 2px; display: block;"
                                  th:src="'http://picsum.photos/300/200?random=' + ${#numbers.sequence(1,10)}" alt="Random Image">
                         </div>
+                        <div class="container my-3" style="align-items: center;">
+                            <p class="post-body" th:text="${post.body}"></p>
+                        </div>
                         <div class="card-footer">
-                            <p class="card-text">User ID: <a th:text="${user.uid}"></a></p>
+                            <p class="card-text"><a th:text="'Author: ' + ${user.username}"></a></p>
                         </div>
                     </div>
                 </div>
@@ -66,11 +68,13 @@
                 <div class="card-body">
                     <p class="card-text">Archives</p>
                 </div>
-                <ol class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="#">August 2019</a></li>
-                    <li class="list-group-item"><a href="#">September 2019</a></li>
-                    <li class="list-group-item"><a href="#">October 2019</a></li>
-                </ol>
+                <div th:each="user : ${users}">
+                    <ol th:each="post : ${user.posts}" class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a th:href="'/blog/' + ${user.username}" th:text="${post.title} + ': ' + ${post.created}"></a>
+                        </li>
+                    </ol>
+                </div>
                 <div class="card-footer text-muted">
                     2 days ago
                 </div>
@@ -80,8 +84,8 @@
                     <h4 class="card-title">Resources</h4>
                     <h6 class="card-subtitle mb-2 text-muted">Resources for website</h6>
                     <p class="card-text"></p>
-                    <a href="#" class="card-link">Github</a>
-                    <a href="#" class="card-link">Bootstrap</a>
+                    <a href="https://github.com/sfatkhutdinov/blog-mvc" class="card-link">Github</a>
+                    <a href="https://getbootstrap.com/" class="card-link">Bootstrap</a>
                 </div>
             </div>
         </aside>
